@@ -4723,12 +4723,15 @@ static int icnss_probe(struct platform_device *pdev)
 
 	penv = priv;
 
+#if 1
         /* Create device file */
         device_create_file(&penv->pdev->dev, &dev_attr_cnss_version_information);
         push_component_info(WCN, "WCN3990", "QualComm");
+#endif
+
 			  init_completion(&priv->unblock_shutdown);
 
-	icnss_pr_info("Platform driver probed successfully\n");
+	      icnss_pr_info("Platform driver probed successfully\n");
 
 	return 0;
 
@@ -4752,7 +4755,11 @@ static int icnss_remove(struct platform_device *pdev)
 
 	complete_all(&penv->unblock_shutdown);
 
+#if 1
 	device_remove_file(&penv->pdev->dev, &dev_attr_cnss_version_information);
+#endif
+
+	complete_all(&penv->unblock_shutdown);
 
 	icnss_modem_ssr_unregister_notifier(penv);
 
